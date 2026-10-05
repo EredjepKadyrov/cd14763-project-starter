@@ -1,0 +1,39 @@
+AgentCore Memory cross-session recall verification
+Date: 2026-10-05
+Memory: CustomerSupportMemory-hPDswKC8PU (us-east-1)
+Active strategies:
+- SEMANTIC: cs_agent/{actorId}/facts
+- USER_PREFERENCE: cs_agent/{actorId}/preferences
+
+The invocations used the Python Starter Toolkit command `uv run agentcore invoke`.
+On Windows, Python subprocess argv was used to preserve the serialized JSON as a
+single argument. The effective command and payload are shown below.
+
+Session A
+Command:
+uv run agentcore invoke '{"prompt":"Hi, I am Jane. I prefer concise responses. Please remember my name and communication preference for next time.","customer_id":"CUST-123","session_id":"memory-confirm-A-correct"}'
+Request ID: 9efc7dc7-f3e1-4c9f-bba1-16b10b0213cf
+Memory event ID: 0000001791186025549#f7c4bbc9
+Actual agent response:
+Hello Jane! I'll keep your preference for concise responses in mind for future
+interactions. How can I assist you today?
+
+Session B (same customer ID, different session ID)
+Command:
+uv run agentcore invoke '{"prompt":"What is my name, and how do I prefer responses?","customer_id":"CUST-123","session_id":"memory-confirm-B-correct"}'
+Request ID: 8e853650-45bd-42d5-85be-833904d7c377
+Memory event ID: 0000001791186175771#0eef0bfc
+Actual agent response:
+Hello Jane! You prefer concise responses.
+
+Post-test verification:
+- The MemoryClient listed one event in each of the two distinct sessions for
+  actor CUST-123.
+- Retrieval from cs_agent/CUST-123/facts returned "The user's name is Jane."
+  and "The user prefers concise responses."
+- Retrieval from cs_agent/CUST-123/preferences returned the extracted
+  preference "Prefers concise responses."
+- Both built-in strategies reported ACTIVE.
+
+Test 4 status: PASSED. Cross-session recall was observed in the deployed
+AgentCore runtime after the strategies became active.

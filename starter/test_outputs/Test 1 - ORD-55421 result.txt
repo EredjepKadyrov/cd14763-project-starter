@@ -1,0 +1,10 @@
+Test 1 - Order Tracking (requested fixture ORD-55421)
+
+Command prompt: Track order ORD-55421 and report its status and tracking number.
+Gateway tool observed: order-tracker___get-order
+
+Result: The target call failed. The MCP client rejected the Gateway tool response because the result omitted the required `resultType` field. The agent returned a technical-error response rather than order details.
+
+Status: NOT PASSED for ORD-55421.
+
+The project Lambda fixture in ../lambda/order_tracker.py contains ORD-001, ORD-002, and ORD-003, not ORD-55421. The separate screenshot `Test 1 - Order Tracking.jpg` documents a successful Gateway call for the supported demo order ORD-001 (SHIPPED, UPS, TRK987654321).

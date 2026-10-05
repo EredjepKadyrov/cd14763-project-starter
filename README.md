@@ -228,6 +228,7 @@ to the legacy `namespaces[0]` field when needed.
 Implement `calculate_loyalty_discount(loyalty_points, tier, order_total, product_category)`:
 - Build a Python code string containing the discount logic
 - Execute it with `code_session()` and return the JSON result
+- Parse the execution envelope and return the calculation fields (including `points_redeemed`, `tier_discount_pct`, `final_total`, and `remaining_points`) as JSON
 - Include a fallback for when the Code Interpreter is unavailable
 
 **Test:**
@@ -245,17 +246,36 @@ Implement the `invoke(payload, context)` function:
 
 ### Section 6 — Deploy to AgentCore
 
+When deploying from Windows, generate a universal dependency file first. The
+AgentCore runtime targets Linux ARM64, while a Windows-resolved lock can include
+Windows-only packages that cannot be installed into that runtime:
+
+```bash
+uv pip compile --universal --python-version 3.13 pyproject.toml --output-file requirements.txt
+```
+
+The Starter Toolkit also requires a `zip` executable on `PATH`. For Windows,
+install the GnuWin32 ZIP utility and add its executable directory to the current
+PowerShell session:
+
+```powershell
+winget install --id GnuWin32.Zip --exact
+$env:PATH += ';C:\Program Files (x86)\GnuWin32\bin'
+```
+
 ```bash
 # Configure the Starter Toolkit CLI (first time only)
-agentcore configure --entrypoint main.py --name <your-agent-name> --deployment-type direct_code_deploy --runtime PYTHON_3_13 --disable-memory
+uv run agentcore configure --entrypoint main.py --name customer_support_agent --deployment-type direct_code_deploy --runtime PYTHON_3_13 --disable-memory --disable-otel --non-interactive
 
 # Deploy the agent
-agentcore deploy
+uv run agentcore deploy
 ```
 
 `--disable-memory` disables only the toolkit's automatic memory creation; your
-agent uses the memory you created in Step 1.5. Let the toolkit create the runtime
-execution role when prompted.
+agent uses the memory you created in Step 1.5. `--disable-otel` avoids enabling
+instrumentation when the generated package does not contain the OTel launcher.
+The non-interactive configuration creates the runtime execution role and S3
+bucket using the toolkit defaults.
 
 After deployment, run this from `starter/` using your student AWS credentials.
 Make sure `KB_ID`, `MEMORY_ID` and `REGION` are filled in as strings in `main.py`:
@@ -270,8 +290,19 @@ change your resource IDs or execution role.
 Wait briefly for the policy to take effect, then invoke the deployed agent:
 
 ```bash
-agentcore invoke '{"prompt": "Hello, what can you help me with?", "customer_id": "CUST-123", "session_id": "test-1"}'
+uv run agentcore invoke '{"prompt":"Hello,\u0020what\u0020can\u0020you\u0020help\u0020me\u0020with?","customer_id":"CUST-123","session_id":"test-1"}'
 ```
+
+In PowerShell, pass compact JSON as one variable so the native command receives
+the full payload:
+
+```powershell
+$payload = '{"prompt":"Hello,\u0020what\u0020can\u0020you\u0020help\u0020me\u0020with?","customer_id":"CUST-123","session_id":"test-1"}'
+uv run agentcore invoke $payload
+```
+
+The successful cloud response and the deployed functional-scenario results are
+saved in [starter/test_outputs/](./starter/test_outputs/).
 
 ---
 

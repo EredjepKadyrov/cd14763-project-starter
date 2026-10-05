@@ -1,0 +1,17 @@
+Test 5 — Loyalty Discount Calculation (Gold, 1,500 points)
+
+Command:
+uv run main.py --% "{\"prompt\":\"I am a Gold member with 1500 points. Calculate my discount on a $150 standard order. Show points redeemed, tier discount percentage, final total, and remaining points.\",\"customer_id\":\"CUST-123\",\"session_id\":\"t5-1500\"}"
+
+Tool called: calculate_loyalty_discount
+
+Original Order Total: $150.00
+Points Redeemed: 1,500 points
+Points Discount: $15.00
+Tier: Gold
+Tier Discount: $13.50 (10.0%)
+Final Total: $121.50
+Total Savings: $28.50
+Remaining Points: 121 points
+
+Status: PASSED.

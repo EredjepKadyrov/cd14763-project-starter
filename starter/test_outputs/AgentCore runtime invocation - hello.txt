@@ -1,0 +1,23 @@
+AgentCore cloud runtime invocation evidence
+Date: 2026-10-05
+
+PowerShell commands (run from starter/):
+$payload = '{"prompt":"Hello,\u0020what\u0020can\u0020you\u0020help\u0020me\u0020with?","customer_id":"CUST-123","session_id":"test-1"}'
+uv run agentcore invoke $payload
+
+Request ID: 53555ff4-3338-424c-a4ca-5823ff41bfa9
+Runtime ARN: arn:aws:bedrock-agentcore:us-east-1:190487010156:runtime/customer_support_agent-0tiHyB9kiF
+
+Actual agent response:
+Hello! I can help you with various things like checking your order status,
+initiating refunds, calculating loyalty discounts, and more.
+
+To get started, could you please tell me what specific assistance you need
+today? For example:
+- Are you looking to check the status of an order?
+- Do you need help with a return or refund?
+- Would you like to see your loyalty points or calculate a discount?
+- Or is there another issue you're facing?
+
+If you have an order number or any specific details, please share them, and
+I'll assist you right away!

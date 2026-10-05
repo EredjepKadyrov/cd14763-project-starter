@@ -1,0 +1,10 @@
+Test 3 — Knowledge Base (RAG): electronics return policy
+
+Command:
+uv run main.py --% "{\"prompt\":\"What is the return window for electronics, and how long can I return Wireless Headphones Pro if they have been opened?\",\"customer_id\":\"CUST-123\",\"session_id\":\"t3-electronics\"}"
+
+Tool called: search_knowledge_base
+
+Result: Electronics have a 15-day return window from the delivery date. Opened Wireless Headphones Pro can be returned within 15 days, provided they are in original condition with all accessories.
+
+Status: PASSED.

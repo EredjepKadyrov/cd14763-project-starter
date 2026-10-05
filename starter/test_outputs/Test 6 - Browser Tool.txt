@@ -1,0 +1,9 @@
+Test 6 — Browser Tool
+
+Prompt: Go to https://www.udacity.com and tell me the page title.
+Tool called: browser (the screenshot shows multiple browser actions for session setup, navigation, and page inspection).
+
+Retrieved page title:
+Learn the Latest Tech Skills; Advance Your Career | Udacity
+
+Status: PASSED. See the accompanying terminal screenshot for the live browser run.

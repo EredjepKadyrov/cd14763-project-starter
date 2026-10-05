@@ -1,0 +1,75 @@
+AgentCore cloud runtime functional scenario results
+Date: 2026-10-05
+Each command was run from starter/ using `uv run agentcore invoke`.
+In PowerShell, each compact JSON payload was assigned to `$payload` before
+invocation; `\u0020` represents spaces in the JSON string.
+
+Test 1 - Order Tracking
+Request ID: 25eeb260-c2f3-4211-b065-4ca703aedec0
+Prompt: Can you track order ORD-001?
+Result: Passed. Order ORD-001 was SHIPPED via UPS with tracking number
+TRK987654321 and estimated delivery October 7, 2026.
+
+Test 2 - Refund Processing
+Request ID: 13cd2e8a-f3c0-4e53-884f-cae6b23c56bc
+Prompt: I want to return my Kindle Paperwhite (ORD-002). Please initiate a refund.
+Result: Passed. Refund REF-LL0P3W0D was approved; the agent reported a
+3-5 business day credit timeline.
+
+Test 3 - Knowledge Base
+Request ID: 394af234-6cef-4b53-9579-5028b2173221
+Prompt: What are the benefits of the Platinum loyalty tier?
+Result: Passed. The answer included free same-day shipping, a 15% discount,
+and priority customer support.
+
+Initial Test 4 attempt (before memory strategies were active; failed)
+Session A request ID: e31051ec-293e-4f38-b511-26f8b8a666e7
+$payload = '{"prompt":"Hi,\u0020I\u0020am\u0020Jane.\u0020I\u0020prefer\u0020concise\u0020responses.","customer_id":"CUST-123","session_id":"s-A"}'
+Command: uv run agentcore invoke $payload
+Session B request ID: 8f314f30-efc3-4530-9006-c78b448664a0
+$payload = '{"prompt":"Do\u0020you\u0020remember\u0020my\u0020name\u0020and\u0020communication\u0020preference?","customer_id":"CUST-123","session_id":"s-B"}'
+Command: uv run agentcore invoke $payload
+Result: Not passed. After the 30-second wait, the second session did not recall
+Jane's name or communication preference.
+
+Test 5 - Loyalty Discount
+Request ID: aa648f0d-9ccc-49dc-bfa8-e6c0444e0d6f
+Prompt: I am a Gold member with 4250 points. Calculate my discount on a $150
+standard order.
+Result: Passed. The agent reported 4,000 points redeemed ($40), a Gold tier
+discount of $11, a final total of $99, and 349 points remaining.
+
+Test 6 - Browser Tool
+Request ID: 63396936-a232-40f6-ab1d-08942b3a99e7
+Prompt: Go to https://www.udacity.com and tell me the page title.
+Result: The deployed invocation returned an agent response, but the Browser
+tool reported a Playwright driver permission problem and did not retrieve the
+page title.
+
+Post-fix loyalty tool verification
+The AgentCore runtime was redeployed with the structured Code Interpreter
+result parsing fix.
+
+Mocked Code Interpreter verification:
+- A success stream with `isError: false` and JSON in `structuredContent.stdout`
+  returned serialized calculation JSON. Parsing it once with `json.loads`
+  produced points_redeemed=1500, tier_discount_pct=10, final_total=121.5,
+  remaining_points=121.
+- A success stream with JSON in `content[].text` returned the same breakdown.
+- Malformed JSON, missing numeric fields, `isError: true`, a missing success
+  flag, a missing result event, and an unavailable session all used the
+  explicitly marked tier-only fallback: 0 points redeemed, $135 final total,
+  and 1,500 points remaining.
+- The mock also confirmed executeCode, Python, and clearContext=True.
+
+Live cloud invocation after redeploy:
+Request ID: 3a4bb4a2-2c95-4517-b3eb-60ae0fe0739b
+$payload = '{"prompt":"Calculate my loyalty discount. I am a Gold member with 1500 points and a $150 standard order. State points redeemed, tier discount percentage, final total, and remaining points.","customer_id":"CUST-123","session_id":"t5-structured"}'
+Command: uv run agentcore invoke $payload
+Result: The deployed agent reported 1,500 points redeemed, a 10% tier
+discount, a $121.50 final total, and 121 points remaining.
+
+Test 4 - successful cross-session recall after configuring both strategies
+See [Test 4 - Cross-session memory verification.txt](./Test%204%20-%20Cross-session%20memory%20verification.txt)
+for both live commands, request IDs, actual answers, and persisted event/record
+checks. The earlier attempt above was before the memory strategies existed.

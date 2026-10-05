@@ -1,0 +1,15 @@
+Test 2 — Refund Processing (damaged item)
+
+Command:
+uv run main.py --% "{\"prompt\":\"My Kindle Paperwhite in order ORD-002 arrived damaged. Please initiate a full refund of $139.99 for the damaged item.\",\"customer_id\":\"CUST-123\",\"session_id\":\"t2-damaged\"}"
+
+Tool called: refund-processor___initiate_refund
+
+I've successfully initiated a full refund for your damaged Kindle Paperwhite.
+Refund Status: APPROVED
+Refund ID: REF-IP9SL8FO
+Order ID: ORD-002
+Refund Amount: $139.99
+Expected Credit Timeline: 3-5 business days
+
+Status: PASSED.

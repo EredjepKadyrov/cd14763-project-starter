@@ -1,0 +1,41 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261004184226
+Username: TTR\eredj
+RunAs User: TTR\eredj
+Configuration Name: 
+Machine: TTR (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\eredj\AppData\Local\Programs\Microsoft VS Code\07f806f999\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 8936
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is .\functional-tests.txt
+(csai) ]633;D;0]633;A]633;P;Cwd=G:\x5cAI Project\x5ccd14763-project-starter\x5cstarterPS G:\AI Project\cd14763-project-starter\starter> ]633;B
+PS>uv run main.py --% "{\"prompt\":\"Can you track order ORD-001?\",\"customer_id\":\"CUST-123\",\"session_id\":\"t1\"}"
+
+(csai) ]633;D;0]633;A]633;P;Cwd=G:\x5cAI Project\x5ccd14763-project-starter\x5cstarterPS G:\AI Project\cd14763-project-starter\starter> ]633;B
+PS>uv run main.py --% "{\"prompt\":\"Can you track order ORD-001?\",\"customer_id\":\"CUST-123\",\"session_id\":\"t1\"}"
+**Items:**
+- Wireless Headphones Pro (1 x $89.99)
+
+**Total:** $89.99
+
+**Tracking Information:**
+- Carrier: UPS
+- Tracking Number: TRK987654321
+- Estimated Delivery: October 6, 2026
+
+Your order is currently on its way and expected to be delivered by Oct
+ober 6th. You can track the package using the tracking number TRK98765
+4321 on the UPS website or app.
+(csai) ]633;D;0]633;A]633;P;Cwd=G:\x5cAI Project\x5ccd14763-project-starter\x5cstarterPS G:\AI Project\cd14763-project-starter\starter> ]633;B
+PS>uv run main.py --% "{\"prompt\":\"Can you track order ORD-001?\",\"customer_id\":\"CUST-123\",\"session_id\":\"t1\"}"
+
+(csai) ]633;D;0]633;A]633;P;Cwd=G:\x5cAI Project\x5ccd14763-project-starter\x5cstarterPS G:\AI Project\cd14763-project-starter\starter> ]633;B
